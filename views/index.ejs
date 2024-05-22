@@ -1,0 +1,112 @@
+<%- include("partials/header.ejs") %>
+
+<div class="container-xl mt-5">
+    <div class="row mb-2">
+        <div class="col-sm-8 col-7">
+            <span class="h1">My books</span>
+        </div>
+        <div class="col-sm-4 col-5 text-end">
+            <a href="/add" class="btn btn-dark">
+                Add Book
+            </a>
+        </div>
+    </div>
+    <form action="/sort" method="post" class="row d-flex align-items-center mt-1 mb-2">
+        <div class="col-sm col-6 text-start">
+            <span class="h5">
+                Sort By:
+            </span>
+        </div>
+        <div class="col-md-4 col-sm-3 col-6">
+            <select name="sortBy" id="sort-by" class="form-select">
+                <option value="none">None</option>
+                <option value="TITLE">Title</option>
+                <option value="DATE_READ">Recency</option>
+                <option value="RATING">Rating</option>
+            </select>
+        </div>
+        <div class="col-md-auto col-sm-3 col-6 d-flex align-items-end mt-sm-0 mt-1">
+            <button type="button" id="ascButton" class="btn btn-dark btn-radio active"
+                onclick="toggleButtons('asc')">ASC</button>
+            <button type="button" id="descButton" class="btn btn-text btn-radio"
+                onclick="toggleButtons('desc')">DESC</button>
+        </div>
+        <input type="hidden" name="order" value="ASC" id="order-input">
+        <div class="col-md-auto col-sm-2 col-6 d-flex align-items-end mt-sm-0 mt-1 justify-content-end justify-content-sm-start">
+            <button type="submit" class="btn btn-dark">Sort</button>
+        </div>
+    </form>
+    <form action="/filter" method="post" class="row d-flex align-items-center mt-1">
+        <div class="col-sm col-6 text-start">
+            <span class="h5">
+                Filter By:
+            </span>
+        </div>
+        <div class="col-sm-3 col-6">
+            <select name="filterBy" id="filter-by" class="form-select">
+                <option value="none" value="none">None</option>
+                <option value="author" value="author">Author</option>
+                <option value="date" value="date">Date</option>
+            </select>
+        </div>
+        <input type="text" name="author" id="author-name" class="col form-control mt-sm-0 mt-1 ms-1 me-1" placeholder="Author name" hidden>
+        <input type="text" onfocus="(this.type='date')" name="startDate" id="start-date" class="col form-control mt-sm-0 mt-1 ms-1" placeholder="Start Date" hidden>
+        <div class="col-1" hidden id="to">
+            <span class="h6">to</span>
+        </div>
+        <input type="text" onfocus="(this.type='date')" name="endDate" id="end-date" class="col form-control mt-sm-0 mt-1 me-1" placeholder="End Date" hidden>
+        <div
+            class="col-md-auto col-sm-2 col-12 d-flex align-items-end mt-sm-0 mt-1 justify-content-end justify-content-sm-start">
+            <button type="submit" class="btn btn-dark">Filter</button>
+        </div>
+    </form>
+    <hr>
+    <div class="mt-3 books-container">
+        <% if (locals.books.length !== 0) {
+            books.forEach((book, index) => { %>
+                <a href="/book/<%= book.id %>">
+                    <div class="container-fluid book-container p-2 rounded ms-1 mb-2 bg-light mt-3">
+                        <div class="row">
+                            <div class="col-sm-10 col-9">
+                                <span class="h3 mb-0"><%= book.title %></span>
+                            </div>
+                            <div class="col-sm-2 col-3 text-end">
+                                <span class="h6 text-secondary"><%= book.rating %> / 10</span>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-sm-10 col-9">
+                                <span class="text-secondary"><%= book.author%>
+                            </div>
+                            <div class="col-sm-2  col-3 text-end">
+                                <span class="text-secondary"><%= book.date_read.toLocaleDateString() %></span>
+                            </div>
+                        </div>
+                        <div class="row mt-3">
+                            <div class="col-12">
+                                <p>
+                                    <% if (locals.reviews[index]) { %>
+                                        <%= reviews[index] %>
+                                    <% } else { %>
+                                        No Review
+                                    <% } %>
+                                </p>
+                            </div>
+                        </div> 
+                    </div>
+                </a>
+        <%  });
+            
+        } else { %>
+            <div class="empty-list-container d-flex justify-content-center align-items-center">
+                <span class="h3 text-secondary">No books available</span>
+            </div>
+        <%
+        }
+        %>
+    </div>
+</div>
+
+<script src="/js/index.js"></script>
+
+<%- include("partials/footer.ejs") %>

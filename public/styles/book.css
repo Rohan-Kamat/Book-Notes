@@ -1,0 +1,31 @@
+#note-form textarea {
+    height: 150px;
+    width: 100%;
+    resize: none;
+}
+
+.edit-note-form textarea {
+    height: 150px;
+    width: 100%;
+    resize: none;
+}
+
+#review-form textarea {
+    height: 400px;
+    width: 100%;
+    resize: none;
+}
+
+#edit-review-form textarea {
+    height: 400px;
+    width: 100%;
+    resize: none;
+}
+
+.form-btn {
+    width: auto;
+}
+
+i:hover {
+    cursor: pointer;
+}

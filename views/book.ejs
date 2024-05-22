@@ -1,0 +1,103 @@
+<%- include("partials/header.ejs"); %>
+
+<div class="container-xl mt-5">
+    <div class="row">
+        <div class="col-10">
+            <span class="h1"><%= book.title %></span>
+        </div>
+        <div class="col-2 text-end">
+            <% if (!locals.review) { %>
+                <button class="btn btn-dark" id="add-review">
+                    Add Review
+                </button>
+            <% } %>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-12">
+            <span class="h4 text-secondary"><%= book.author %></span>
+        </div>
+    </div>
+    <hr>
+    <div class="row">
+        <div class="col-10">
+            <span class="h2">Review</span>
+        </div>
+        <div class="col-2 text-end fs-5">
+            <i class="fa-solid fa-pen-to-square" id="edit-review"></i>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-12">
+            <form action="/add-review" method="post" id="review-form" hidden>
+                <input type="hidden" name="bookId" value="<%= book.id %>">
+                <textarea name="review" placeholder="Write Review" class="form-control"></textarea>
+                <div class="row d-flex justify-content-end">
+                    <input type="submit" value="Add" class="btn btn-dark me-2 mt-2 form-btn">
+                </div>
+            </form>
+            <form action="/edit-review" method="post" id="edit-review-form" hidden>
+                <input type="hidden" name="bookId" value="<%= book.id %>">
+                <textarea name="review" placeholder="Write Review" class="form-control" ><%= review %></textarea>
+                <div class="row d-flex justify-content-end">
+                    <input type="submit" value="Edit" class="btn btn-dark me-2 mt-2 form-btn">
+                    <button type="button" class="btn btn-light form-btn mt-2 me-2" id="edit-review-cancel">Cancel</button>
+                </div>
+            </form>
+            <% if (locals.review) { %>
+                <p class="fs-5 mt-3 text-justify" id="review-text">
+                    <%= review %>
+                </p>
+            <% } else { %>
+                <span class="text-secondary" id="no-review"><i>No Review</i></span>
+            <% } %>
+        </div>
+    </div>
+    <hr>
+    <div class="row">
+        <div class="col">
+            <span class="h2">Notes</span>
+        </div>
+    </div>
+    <% if (locals.notes) {
+        notes.forEach(note => { %>
+            <div class="row note-container mt-3 ms-1 me-1 p-1 rounded bg-light" id="note-<%= note.id %>">
+                <div class="col-12">
+                    <p class="m-0 fs-6">
+                        <%= note.note %>
+                    </p>
+                </div>
+                <div class="col-12 d-flex justify-content-end">
+                    <i class="fa-solid fa-pen-to-square edit-note" id="<%= note.id %>"></i>
+                </div>
+            </div>
+            <form action="/edit-note" method="post" class="edit-note-form mt-3" id="edit-note-<%= note.id %>-form" hidden>
+                <input type="hidden" name="noteId" value="<%= note.id %>">
+                <input type="hidden" name="bookId" value="<%= book.id %>">
+                <textarea name="note" placeholder="Add Note" class="form-control"><%= note.note %></textarea>
+                <div class="row d-flex justify-content-end">
+                    <input type="submit" value="Edit" class="btn btn-dark me-2 mt-2 form-btn">
+                    <input type="reset" value="Cancel" class="btn btn-light form-btn mt-2 me-2">
+                </div>
+            </form>
+    <%  });
+    } %>
+    <div class="row ms-1 me-1 mt-3">
+        <form action="/add-note" method="post" id="note-form" hidden>
+            <input type="hidden" name="bookId" value="<%= book.id %>">
+            <textarea name="note" placeholder="Add Note" class="form-control"></textarea>
+            <div class="row d-flex justify-content-end">
+                <input type="submit" value="Add" class="btn btn-dark me-2 mt-2 form-btn">
+            </div>
+        </form>
+    </div>
+    <div class="row d-flex justify-content-center mt-3">
+        <button class="btn btn-dark" id="add-note" style="width: 90%">Add Note</button>
+    </div>
+    
+</div>
+
+<script src="/js/book.js"></script>
+
+<script src="https://kit.fontawesome.com/49b78285c5.js" crossorigin="anonymous"></script>
+<%- include("partials/footer.ejs"); %>
